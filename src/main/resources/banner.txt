@@ -5,4 +5,5 @@
  / /    \____(_)____/\__,_/\__/\___/|__/|__/\__,_/\__, /   /____/\___/_/    |___/_/\___/\___/  _/ /
 /__/                                             /____/                                       /__/
 
---< ${application.version} >--
+Version: ${application.formatted-version} :: ${application.title}
+Powered by Spring Boot ${spring-boot.formatted-version}

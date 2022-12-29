@@ -15,6 +15,9 @@
 	<description>J.Gateway Service</description>
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -37,6 +40,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -55,6 +59,31 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.3.0</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<packageName>com.justedlev.gateway</packageName>
+							</manifest>
+							<manifestEntries>
+								<Created-By>Justedlev {-...-}</Created-By>
+								<Implementation-Title>${description}</Implementation-Title>
+								<Implementation-Version>${version}</Implementation-Version>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
 		</plugins>
 	</build>
 	<repositories>
