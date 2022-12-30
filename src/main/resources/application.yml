@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8765}
+  port: 8765
 spring:
   application:
     name: api-gateway
@@ -9,22 +9,22 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-      default-filters:
-        TokenRelay=
-  security:
-    oauth2:
-      client:
-        registration:
-          gateway:
-            provider: j-provider
-            client-id: gateway-client-id
-            client-secret: secret_justedlev
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:${server.port}/login/oauth2/code/{registrationId}"
-            scope: openid, message.read
-        provider:
-          j-provider:
-            issuer-uri: http://localhost:9876
+#      default-filters:
+#        TokenRelay=
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          gateway:
+#            provider: j-provider
+#            client-id: gateway-client-id
+#            client-secret: secret_justedlev
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "http://localhost:${server.port}/login/oauth2/code/{registrationId}"
+#            scope: openid, message.read
+#        provider:
+#          j-provider:
+#            issuer-uri: http://localhost:9876
 eureka:
   client:
     service-url:
