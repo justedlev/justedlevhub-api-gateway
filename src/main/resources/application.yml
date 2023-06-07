@@ -25,19 +25,19 @@ spring:
         - id: jaccount-service
           uri: lb://jaccount-service
           predicates:
-            - Path=/jaccount-service/**
+            - Path=/**
         - id: jstorage-service
           uri: lb://jstorage-service
           predicates:
-            - Path=/jstorage-service/**
+            - Path=/**
         - id: jtascexec-service
           uri: lb://jtascexec-service
           predicates:
-            - Path=/jtascexec-service/**
+            - Path=/**
         - id: jnotification-service
           uri: lb://jnotification-service
           predicates:
-            - Path=/jnotification-service/**
+            - Path=/**
 #      default-filters:
 #        TokenRelay=
 #  security:
