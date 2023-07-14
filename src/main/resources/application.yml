@@ -67,7 +67,7 @@ eureka:
     instance-id: ${spring.application.name}:${random.uuid}
   client:
     service-url:
-      default-zone: ${DISCOVERY_HOST}
+      defaultZone: ${DISCOVERY_HOST}
 logging:
   level:
     web: DEBUG
