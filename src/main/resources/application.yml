@@ -5,6 +5,8 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      loadbalancer:
+        use404: true
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -38,6 +40,12 @@ spring:
           uri: lb://jnotification-service
           predicates:
             - Path=/**
+#        - id: swagger_route
+#          uri: http://localhost:${server.port}/v3/api-docs
+#          predicates:
+#            - Path=/swagger/**
+#          filters:
+#            - RewritePath=/swagger/(?<segment>.*), /$\{segment}
 #      default-filters:
 #        TokenRelay=
 #  security:
@@ -58,3 +66,6 @@ eureka:
   client:
     service-url:
       default-zone: ${DISCOVERY_HOST}
+logging:
+  level:
+    web: DEBUG
