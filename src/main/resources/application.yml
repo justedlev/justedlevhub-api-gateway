@@ -63,6 +63,8 @@ spring:
 #          j-provider:
 #            issuer-uri: http://localhost:9876
 eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
   client:
     service-url:
       default-zone: ${DISCOVERY_HOST}
