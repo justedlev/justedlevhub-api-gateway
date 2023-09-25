@@ -3,29 +3,30 @@ server:
 spring:
   application:
     name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI}
+          jwk-set-uri: ${JWKS_URI}
   cloud:
     gateway:
-      loadbalancer:
-        use404: true
+      #      loadbalancer:
+      #        use404: true
       globalcors:
         corsConfigurations:
           '[/**]':
             allowCredentials: true
-            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
-            allowedHeaders: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
+#            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
+#            allowedOrigins: "*"
+#            allowedHeaders: "*"
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: jaccount-service
-          uri: lb://jaccount-service
+        - id: users-service
+          uri: lb://users-service
           predicates:
             - Path=/**
         - id: jstorage-service
@@ -36,8 +37,8 @@ spring:
           uri: lb://jtascexec-service
           predicates:
             - Path=/**
-        - id: jnotification-service
-          uri: lb://jnotification-service
+        - id: notification-service
+          uri: lb://notification-service
           predicates:
             - Path=/**
 #        - id: swagger_route
@@ -71,3 +72,6 @@ eureka:
 logging:
   level:
     web: DEBUG
+    org:
+      springframework:
+        security: DEBUG
