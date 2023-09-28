@@ -1,5 +1,6 @@
 package com.justedlev.hub.configuration.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
@@ -7,18 +8,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class KeycloakGrantedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+    private static final String ROLE_PREFIX = "ROLE_";
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-    private final List<String> claimPaths = List.of(
-            "realm_access.roles",
-            "resource_access.account.roles"
-    );
+    private final KeycloakProperties.JwtConverterProperties properties;
 
     @Override
     public Collection<GrantedAuthority> convert(@NonNull Jwt jwt) {
@@ -31,10 +33,12 @@ public class KeycloakGrantedAuthoritiesConverter implements Converter<Jwt, Colle
     }
 
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        return claimPaths.stream()
+        return properties.getRoleClaimNames()
+                .stream()
                 .map(path -> extractAuthority(jwt, path))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
+                .map(ROLE_PREFIX::concat)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }

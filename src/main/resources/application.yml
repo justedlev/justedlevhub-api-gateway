@@ -77,3 +77,11 @@ logging:
     org:
       springframework:
         security: trace
+
+# Custom properties
+keycloak:
+  issuer-uri: ${ISSUER_URI}
+  jwt-set-uri: ${JWKS_URI}
+  jwt-converter:
+    role-claim-names: realm_access.roles,resource_access.account.roles
+    principal-claim-name: preferred_username
