@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
@@ -14,7 +14,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final KeycloakLogoutHandler keycloakLogoutHandler;
-    private final KeycloakJwtAuthenticationConverter keycloakJwtAuthenticationConverter;
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources",
@@ -38,21 +37,15 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-                .logout(logoutHandler -> logoutHandler.logoutHandler(keycloakLogoutHandler))
+                .logout(logoutHandler -> logoutHandler
+                        .logoutHandler(keycloakLogoutHandler)
+                        .logoutUrl("/logout")
+                )
                 .authorizeExchange(exchangeSpec -> exchangeSpec
-                                .pathMatchers(AUTH_WHITELIST).permitAll()
-//                        .pathMatchers("/api/v1/accounts/history/**").hasRole("admin")
-                                .anyExchange().authenticated()
+                        .pathMatchers(AUTH_WHITELIST).permitAll()
+                        .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oAuth -> oAuth
-                        .jwt(jwtSpec -> jwtSpec
-                                .jwtAuthenticationConverter(reactiveJwtAuthenticationConverterAdapter())
-                        )
-                )
+                .oauth2Client(Customizer.withDefaults())
                 .build();
-    }
-
-    private ReactiveJwtAuthenticationConverterAdapter reactiveJwtAuthenticationConverterAdapter() {
-        return new ReactiveJwtAuthenticationConverterAdapter(keycloakJwtAuthenticationConverter);
     }
 }

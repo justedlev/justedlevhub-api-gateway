@@ -6,11 +6,25 @@ spring:
   application:
     name: api-gateway
   security:
+    user:
+      name: ${USERNAME}
+      password: ${PASSWORD}
+      roles: ${ROLES}
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${ISSUER_URI}
-          jwk-set-uri: ${JWKS_URI}
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI}
+            jwk-set-uri: ${KEYCLOAK_JWKS_URI}
+            user-name-attribute: preferred_username
+        registration:
+          api-gateway:
+            client-name: api-gateway
+            client-id: ${KEYCLOAK_CLIENT_ID}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            provider: keycloak
+            authorization-grant-type: authorization_code
+            scope: openid,resource.read
   cloud:
     gateway:
       #      loadbalancer:
@@ -19,9 +33,9 @@ spring:
         corsConfigurations:
           '[/**]':
             allowCredentials: true
-#            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
-#            allowedOrigins: "*"
-#            allowedHeaders: "*"
+      #            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
+      #            allowedOrigins: "*"
+      #            allowedHeaders: "*"
       discovery:
         locator:
           enabled: true
@@ -31,6 +45,9 @@ spring:
           uri: lb://users-justedlevhub
           predicates:
             - Path=/**
+          filters:
+            - TokenRelay=
+            - RemoveRequestHeader=Cookie
         - id: jstorage-service
           uri: lb://jstorage-service
           predicates:
@@ -43,28 +60,6 @@ spring:
           uri: lb://notification-service
           predicates:
             - Path=/**
-#        - id: swagger_route
-#          uri: http://localhost:${server.port}/v3/api-docs
-#          predicates:
-#            - Path=/swagger/**
-#          filters:
-#            - RewritePath=/swagger/(?<segment>.*), /$\{segment}
-#      default-filters:
-#        TokenRelay=
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          gateway:
-#            provider: j-provider
-#            client-id: gateway-client-id
-#            client-secret: secret_justedlev
-#            authorization-grant-type: authorization_code
-#            redirect-uri: "http://localhost:${server.port}/login/oauth2/code/{registrationId}"
-#            scope: openid, message.read
-#        provider:
-#          j-provider:
-#            issuer-uri: http://localhost:9876
 eureka:
   instance:
     instance-id: ${spring.application.name}:${random.uuid}
@@ -79,9 +74,3 @@ logging:
         security: trace
 
 # Custom properties
-keycloak:
-  issuer-uri: ${ISSUER_URI}
-  jwt-set-uri: ${JWKS_URI}
-  jwt-converter:
-    role-claim-names: realm_access.roles,resource_access.account.roles
-    principal-claim-name: preferred_username

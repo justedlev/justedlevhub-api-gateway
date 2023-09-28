@@ -2,7 +2,6 @@ package com.justedlev.hub.configuration.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.server.WebFilterExchange;
@@ -25,18 +24,21 @@ public class KeycloakLogoutHandler implements ServerLogoutHandler {
     }
 
     private void logoutFromKeycloak(OidcUser user) {
-        String endSessionEndpoint = user.getIssuer() + "/protocol/openid-connect/logout";
-        UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString(endSessionEndpoint)
-                .queryParam("id_token_hint", user.getIdToken().getTokenValue());
-
-        ResponseEntity<String> logoutResponse = restTemplate.getForEntity(
-                builder.toUriString(), String.class);
+        var endSessionEndpoint = buildEndSessionEndpoint(user);
+        var logoutResponse = restTemplate.getForEntity(endSessionEndpoint, String.class);
 
         if (logoutResponse.getStatusCode().is2xxSuccessful()) {
             log.info("Successfully logged out from Keycloak");
         } else {
             log.error("Could not propagate logout to Keycloak");
         }
+    }
+
+    private String buildEndSessionEndpoint(OidcUser user) {
+        return UriComponentsBuilder
+                .fromUriString(user.getIssuer().toString())
+                .path("/protocol/openid-connect/logout")
+                .queryParam("id_token_hint", user.getIdToken().getTokenValue())
+                .toUriString();
     }
 }
