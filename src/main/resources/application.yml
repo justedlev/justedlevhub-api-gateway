@@ -1,5 +1,7 @@
 server:
   port: 8765
+  error:
+    include-stacktrace: never
 spring:
   application:
     name: api-gateway
@@ -25,8 +27,8 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: users-service
-          uri: lb://users-service
+        - id: users-justedlevhub
+          uri: lb://users-justedlevhub
           predicates:
             - Path=/**
         - id: jstorage-service
@@ -71,7 +73,7 @@ eureka:
       defaultZone: ${DISCOVERY_HOST}
 logging:
   level:
-    web: DEBUG
+    web: debug
     org:
       springframework:
-        security: DEBUG
+        security: trace

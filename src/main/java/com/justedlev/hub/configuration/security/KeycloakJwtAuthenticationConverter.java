@@ -10,15 +10,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 public class KeycloakJwtAuthenticationConverter extends JwtAuthenticationConverter {
     private String keycloakPrincipalClaimName = "preferred_username";
     private KeycloakGrantedAuthoritiesConverter keycloakGrantedAuthoritiesConverter =
-            KeycloakGrantedAuthoritiesConverter.getInstance();
+            new KeycloakGrantedAuthoritiesConverter();
 
     public KeycloakJwtAuthenticationConverter() {
         super();
         setJwtGrantedAuthoritiesConverter(keycloakGrantedAuthoritiesConverter);
         setPrincipalClaimName(keycloakPrincipalClaimName);
-    }
-
-    public static KeycloakJwtAuthenticationConverter getInstance() {
-        return new KeycloakJwtAuthenticationConverter();
     }
 }
