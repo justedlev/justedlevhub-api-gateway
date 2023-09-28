@@ -15,23 +15,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfiguration {
     private final KeycloakLogoutHandler keycloakLogoutHandler;
 
-    private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**",
-            "/v3/api-docs/**",
-            "/api/public/**",
-            "/api/public/authenticate",
-            "/actuator/**",
-            "/*/actuator/**",
-            "/swagger-ui/**",
-            "/error",
-            "/sso/logout"
-    };
-
     @Bean
     public SecurityWebFilterChain securityFilterChain(@NonNull ServerHttpSecurity httpSecurity) {
         return httpSecurity
@@ -42,7 +25,23 @@ public class SecurityConfiguration {
                         .logoutUrl("/logout")
                 )
                 .authorizeExchange(exchangeSpec -> exchangeSpec
-                        .pathMatchers(AUTH_WHITELIST).permitAll()
+                        .pathMatchers(
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/swagger-ui.html",
+                                "/webjars/**",
+                                "/v3/api-docs/**",
+                                "/api/public/**",
+                                "/api/public/authenticate",
+                                "/actuator/**",
+                                "/*/actuator/**",
+                                "/swagger-ui/**",
+                                "/error",
+                                "/sso/logout",
+                                "/logout"
+                        ).permitAll()
                         .anyExchange().authenticated()
                 )
                 .oauth2Client(Customizer.withDefaults())
