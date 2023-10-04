@@ -2,9 +2,10 @@ server:
   port: 8765
   error:
     include-stacktrace: never
+
 spring:
   application:
-    name: api-gateway
+    name: '@project.name@'
   security:
     user:
       name: ${USERNAME}
@@ -19,38 +20,21 @@ spring:
           introspection-uri: ${KEYCLOAK_INTROSPECTION_ENDPOINT}
           client-id: ${KEYCLOAK_CLIENT_ID}
           client-secret: ${KEYCLOAK_CLIENT_SECRET}
-#      client:
-#        provider:
-#          keycloak:
-#            issuer-uri: ${KEYCLOAK_ISSUER_URI}
-#            jwk-set-uri: ${KEYCLOAK_JWKS_URI}
-#            user-name-attribute: preferred_username
-#        registration:
-#          api-gateway:
-#            client-name: api-gateway
-#            client-id: ${KEYCLOAK_CLIENT_ID}
-#            client-secret: ${KEYCLOAK_CLIENT_SECRET}
-#            provider: keycloak
-#            authorization-grant-type: client_credentials
-#            scope: openid,resource.read
   cloud:
     gateway:
-      #      loadbalancer:
-      #        use404: true
       globalcors:
         corsConfigurations:
           '[/**]':
             allowCredentials: true
-      #            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
-      #            allowedOrigins: "*"
-      #            allowedHeaders: "*"
+            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
+            allowedHeaders: '*'
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: users-justedlevhub
-          uri: lb://users-justedlevhub
+        - id: users.justedlev.hub
+          uri: lb://users.justedlev.hub
           predicates:
             - Path=/**
         #          filters:
@@ -68,12 +52,14 @@ spring:
           uri: lb://notification-service
           predicates:
             - Path=/**
+
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${random.uuid}
+    instance-id: ${spring.application.name}
   client:
     service-url:
       defaultZone: ${DISCOVERY_HOST}
+
 logging:
   level:
     web: debug
