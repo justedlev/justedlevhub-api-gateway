@@ -17,11 +17,11 @@ import io.swagger.v3.oas.annotations.servers.Server;
         ),
         servers = {
                 @Server(
-                        url = "http://localhost:8765",
+                        url = "http://localhost:${server.port}",
                         description = "Local ENV"
                 ),
                 @Server(
-                        url = "http://api-gateway:8765",
+                        url = "http://api-gateway:${server.port}",
                         description = "Docker ENV"
                 )
         }
