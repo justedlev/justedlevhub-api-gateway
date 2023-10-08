@@ -25,33 +25,50 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowCredentials: true
-            allowedOrigins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
-            allowedHeaders: '*'
+            allow-credentials: true
+            allowed-origins: ${ORIGINS:http://localhost:${server.port},http://localhost:3000}
+            allowed-headers: '*'
+            allowed-methods: '*'
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
       routes:
+        - id: openapi
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
         - id: users.justedlev.hub
           uri: lb://users.justedlev.hub
           predicates:
-            - Path=/**
-        #          filters:
-        #            - TokenRelay=
-        #            - RemoveRequestHeader=Cookie
-        - id: jstorage-service
-          uri: lb://jstorage-service
+            - Path=/users/api/**
+        - id: notifications.justedlev.hub
+          uri: lb://notifications.justedlev.hub
           predicates:
-            - Path=/**
-        - id: jtascexec-service
-          uri: lb://jtascexec-service
-          predicates:
-            - Path=/**
-        - id: notification-service
-          uri: lb://notification-service
-          predicates:
-            - Path=/**
+            - Path=/notifications/api/**
+#        - id: jstorage-service
+#          uri: lb://jstorage-service
+#          predicates:
+#            - Path=/**
+#        - id: jtascexec-service
+#          uri: lb://jtascexec-service
+#          predicates:
+#            - Path=/**
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    urls:
+      - url: /v3/api-docs
+        name: 'Api Gateway'
+      - url: /users.justedlev.hub/api/v3/api-docs
+        name: 'Accounts Service APIs'
+      - url: /notifications.justedlev.hub/api/v3/api-docs
+        name: 'Notifications Service APIs'
 
 eureka:
   instance:

@@ -26,18 +26,19 @@ public class SecurityConfiguration {
                 )
                 .authorizeExchange(exchangeSpec -> exchangeSpec
                         .pathMatchers(
+                                "/webjars/**",
+                                "/favicon.ico",
+                                "/v3/api-docs/**",
+                                "/*/v3/api-docs/**",
+                                "/*/*/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
                                 "/swagger-resources",
                                 "/swagger-resources/**",
                                 "/configuration/ui",
                                 "/configuration/security",
-                                "/swagger-ui.html",
-                                "/webjars/**",
-                                "/v3/api-docs/**",
-                                "/api/public/**",
-                                "/api/public/authenticate",
                                 "/actuator/**",
                                 "/*/actuator/**",
-                                "/swagger-ui/**",
                                 "/error",
                                 "/sso/logout",
                                 "/logout"
