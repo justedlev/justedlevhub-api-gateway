@@ -47,8 +47,8 @@ spring:
           uri: lb://users-service
           predicates:
             - Path=/users/**
-        - id: notifications.justedlev.hub
-          uri: lb://notifications.justedlev.hub
+        - id: notification-service
+          uri: lb://notification-service
           predicates:
             - Path=/notifications/api/**
 
@@ -64,7 +64,7 @@ springdoc:
         display-name: 'API Gateway'
       - url: /users-service/api/v3/api-docs
         name: 'Accounts Service APIs'
-      - url: /notifications/api/v3/api-docs
+      - url: /notification-service/api/v3/api-docs
         name: 'Notifications Service APIs'
 
 management:

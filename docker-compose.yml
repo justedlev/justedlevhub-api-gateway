@@ -1,0 +1,14 @@
+version: "3.9"
+name: justedlevhub
+services:
+  api-gateway:
+    build: .
+    container_name: api-gateway
+    env_file:
+      - "C:\Users\edwar\OneDrive\intellij\env\api-gateway-docker.env"
+    image: justedlev/api-gateway:1.0
+    ports:
+      - "8765:8765"
+    depends_on:
+      - service-registry
+      - sso
