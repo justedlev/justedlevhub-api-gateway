@@ -6,6 +6,9 @@ server:
 spring:
   application:
     name: '@project.name@'
+  devtools:
+    restart:
+      enabled: false
   security:
     user:
       name: ${USERNAME}
@@ -14,12 +17,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI}
-          jwk-set-uri: ${KEYCLOAK_JWKS_URI}
+          issuer-uri: ${keycloak.issuer-uri}
+          jwk-set-uri: ${keycloak.jwk-set-uri}
         opaquetoken:
-          introspection-uri: ${KEYCLOAK_INTROSPECTION_ENDPOINT}
-          client-id: ${KEYCLOAK_CLIENT_ID}
-          client-secret: ${KEYCLOAK_CLIENT_SECRET}
+          introspection-uri: ${keycloak.introspection-uri}
+          client-id: ${keycloak.client.id}
+          client-secret: ${keycloak.client.secret}
   cloud:
     gateway:
       globalcors:
@@ -40,48 +43,74 @@ spring:
             - Path=/v3/api-docs/**
           filters:
             - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
-        - id: users.justedlev.hub
-          uri: lb://users.justedlev.hub
+        - id: users-service
+          uri: lb://users-service
           predicates:
-            - Path=/users/api/**
+            - Path=/users/**
         - id: notifications.justedlev.hub
           uri: lb://notifications.justedlev.hub
           predicates:
             - Path=/notifications/api/**
-#        - id: jstorage-service
-#          uri: lb://jstorage-service
-#          predicates:
-#            - Path=/**
-#        - id: jtascexec-service
-#          uri: lb://jtascexec-service
-#          predicates:
-#            - Path=/**
 
 springdoc:
+  show-actuator: true
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
     urls:
       - url: /v3/api-docs
-        name: 'Api Gateway'
-      - url: /users.justedlev.hub/api/v3/api-docs
+        name: 'API Gateway'
+        display-name: 'API Gateway'
+      - url: /users-service/api/v3/api-docs
         name: 'Accounts Service APIs'
-      - url: /notifications.justedlev.hub/api/v3/api-docs
+      - url: /notifications/api/v3/api-docs
         name: 'Notifications Service APIs'
 
+management:
+  info:
+    build:
+      enabled: true
+    os:
+      enabled: true
+    defaults:
+      enabled: true
+    java:
+      enabled: true
+  endpoint:
+    health:
+      enabled: true
+    restart:
+      enabled: true
+    refresh:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 eureka:
+
   instance:
-    instance-id: ${spring.application.name}
+    instance-id: gateway
+    app-group-name: justedlev-hub
+    appname: gateway
   client:
     service-url:
-      defaultZone: ${DISCOVERY_HOST}
+      defaultZone: ${SERVICE_REGISTRY}
 
 logging:
   level:
-    web: debug
+    web: trace
     org:
       springframework:
         security: trace
 
 # Custom properties
+keycloak:
+  issuer-uri: ${KEYCLOAK_ISSUER_URI}
+  jwk-set-uri: ${KEYCLOAK_JWKS_URI}
+  introspection-uri: ${KEYCLOAK_INTROSPECTION_ENDPOINT}
+  client:
+    id: ${KEYCLOAK_CLIENT_ID}
+    secret: ${KEYCLOAK_CLIENT_SECRET}
