@@ -1,0 +1,8 @@
+eureka:
+  instance:
+    instance-id: gateway
+    app-group-name: justedlev-hub
+    appname: gateway
+  client:
+    service-url:
+      defaultZone: ${SERVICE_REGISTRY}

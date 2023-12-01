@@ -1,0 +1,9 @@
+keycloak:
+  server-url: ${KEYCLOAK_HOST}
+  issuer-uri: ${KEYCLOAK_ISSUER_URI}
+  jwk-set-uri: ${KEYCLOAK_JWKS_URI}
+  introspection-uri: ${KEYCLOAK_INTROSPECTION_ENDPOINT}
+  realm: ${KEYCLOAK_REALM}
+  client:
+    id: ${KEYCLOAK_CLIENT_ID}
+    secret: ${KEYCLOAK_CLIENT_SECRET}

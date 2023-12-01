@@ -1,0 +1,14 @@
+springdoc:
+  show-actuator: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    urls:
+      - url: /v3/api-docs
+        name: 'API Gateway'
+        display-name: 'API Gateway'
+      - url: /users-service/api/v3/api-docs
+        name: 'Accounts Service APIs'
+      - url: /notification-service/api/v3/api-docs
+        name: 'Notifications Service APIs'
