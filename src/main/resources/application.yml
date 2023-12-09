@@ -11,6 +11,7 @@ spring:
       - classpath:/management.yml
       - classpath:/eureka.yml
       - classpath:/logging.yml
+      - classpath:/security.yml
   application:
     name: '@project.name@'
   devtools:
@@ -44,17 +45,11 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: openapi
-          uri: http://localhost:${server.port}
+        - id: service.users
+          uri: lb://service.users
           predicates:
-            - Path=/v3/api-docs/**
-          filters:
-            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
-        - id: users-service
-          uri: lb://users-service
-          predicates:
-            - Path=/**
+            - Path=/api/v1/**
         - id: notification-service
           uri: lb://notification-service
           predicates:
-            - Path=/**
+            - Path=/api/v1/**
