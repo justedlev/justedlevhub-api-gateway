@@ -139,4 +139,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <developers>
+        <developer>
+            <id>justedlev</id>
+            <name>Edward L.</name>
+            <email>jvstedlev@gmail.com</email>
+            <url>https://github.com/Justedlev</url>
+            <timezone>Asia/Jerusalem</timezone>
+        </developer>
+    </developers>
 </project>
