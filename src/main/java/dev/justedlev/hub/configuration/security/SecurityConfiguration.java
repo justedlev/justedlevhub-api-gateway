@@ -1,4 +1,4 @@
-package com.justedlev.hub.configuration.security;
+package dev.justedlev.hub.configuration.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

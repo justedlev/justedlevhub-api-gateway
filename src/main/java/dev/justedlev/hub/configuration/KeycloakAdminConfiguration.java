@@ -1,6 +1,6 @@
-package com.justedlev.hub.configuration;
+package dev.justedlev.hub.configuration;
 
-import com.justedlev.hub.configuration.properties.KeycloakProperties;
+import dev.justedlev.hub.configuration.properties.KeycloakProperties;
 import lombok.NonNull;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;

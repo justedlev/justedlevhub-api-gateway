@@ -1,9 +1,9 @@
-package com.justedlev.hub;
+package dev.justedlev.hub;
 
-import com.justedlev.hub.configuration.properties.KeycloakClientProperties;
-import com.justedlev.hub.configuration.properties.KeycloakJwtConverterProperties;
-import com.justedlev.hub.configuration.properties.KeycloakProperties;
-import com.justedlev.hub.configuration.properties.SecurityProperties;
+import dev.justedlev.hub.configuration.properties.KeycloakClientProperties;
+import dev.justedlev.hub.configuration.properties.KeycloakJwtConverterProperties;
+import dev.justedlev.hub.configuration.properties.KeycloakProperties;
+import dev.justedlev.hub.configuration.properties.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

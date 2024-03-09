@@ -1,6 +1,6 @@
-package com.justedlev.hub.configuration.security;
+package dev.justedlev.hub.configuration.security;
 
-import com.justedlev.hub.configuration.properties.KeycloakJwtConverterProperties;
+import dev.justedlev.hub.configuration.properties.KeycloakJwtConverterProperties;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
